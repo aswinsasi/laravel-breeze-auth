@@ -1,3 +1,8 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+/* Tailwind imports should come AFTER all @import rules */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
