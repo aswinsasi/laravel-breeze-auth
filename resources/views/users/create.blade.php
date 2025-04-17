@@ -1,72 +1,73 @@
-@extends('layouts.app')
+@extends('adminlte::page')
+
+@section('title', 'Create New User')
+
+@section('content_header')
+    <h1>Create New User</h1>
+@stop
 
 @section('content')
-<div class="row">
-    <div class="col-lg-12 margin-tb">
-        <div class="pull-left">
-            <h2>Create New User</h2>
+<div class="card">
+    <div class="card-header">
+        <div class="d-flex justify-content-between">
+            <h3 class="card-title">Add User</h3>
+            <a class="btn btn-primary btn-sm" href="{{ route('admin.users.index') }}">
+                <i class="fas fa-arrow-left"></i> Back
+            </a>
         </div>
-        <div class="pull-right">
-            <a class="btn btn-primary btn-sm mb-2" href="{{ route('users.index') }}"><i class="fa fa-arrow-left"></i> Back</a>
-        </div>
+    </div>
+
+    <div class="card-body">
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <strong>Whoops!</strong> Please fix the following issues:
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <form method="POST" action="{{ route('admin.users.store') }}">
+            @csrf
+            <div class="form-group">
+                <label for="name"><strong>Name:</strong></label>
+                <input type="text" name="name" placeholder="Name" class="form-control" value="{{ old('name') }}">
+            </div>
+
+            <div class="form-group">
+                <label for="email"><strong>Email:</strong></label>
+                <input type="email" name="email" placeholder="Email" class="form-control" value="{{ old('email') }}">
+            </div>
+
+            <div class="form-group">
+                <label for="password"><strong>Password:</strong></label>
+                <input type="password" name="password" placeholder="Password" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="confirm-password"><strong>Confirm Password:</strong></label>
+                <input type="password" name="confirm-password" placeholder="Confirm Password" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="roles"><strong>Role:</strong></label>
+                <select name="roles[]" class="form-control" multiple>
+                    @foreach ($roles as $value => $label)
+                        <option value="{{ $value }}">{{ $label }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="text-center">
+                <button type="submit" class="btn btn-success">
+                    <i class="fas fa-save"></i> Submit
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 
-@if (count($errors) > 0)
-    <div class="alert alert-danger">
-      <strong>Whoops!</strong> There were some problems with your input.<br><br>
-      <ul>
-         @foreach ($errors->all() as $error)
-           <li>{{ $error }}</li>
-         @endforeach
-      </ul>
-    </div>
-@endif
-
-<form method="POST" action="{{ route('admin.users.store') }}">
-    @csrf
-    <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="form-group">
-                <strong>Name:</strong>
-                <input type="text" name="name" placeholder="Name" class="form-control">
-            </div>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="form-group">
-                <strong>Email:</strong>
-                <input type="email" name="email" placeholder="Email" class="form-control">
-            </div>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="form-group">
-                <strong>Password:</strong>
-                <input type="password" name="password" placeholder="Password" class="form-control">
-            </div>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="form-group">
-                <strong>Confirm Password:</strong>
-                <input type="password" name="confirm-password" placeholder="Confirm Password" class="form-control">
-            </div>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="form-group">
-                <strong>Role:</strong>
-                <select name="roles[]" class="form-control" multiple="multiple">
-                    @foreach ($roles as $value => $label)
-                        <option value="{{ $value }}">
-                            {{ $label }}
-                        </option>
-                     @endforeach
-                </select>
-            </div>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-            <button type="submit" class="btn btn-primary btn-sm mt-2 mb-3"><i class="fa-solid fa-floppy-disk"></i> Submit</button>
-        </div>
-    </div>
-</form>
-
-<p class="text-center text-primary"><small>Aswin</small></p>
-@endsection
+<p class="text-center text-muted"><small>Aswin</small></p>
+@stop

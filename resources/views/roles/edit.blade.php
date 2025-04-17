@@ -1,55 +1,60 @@
-@extends('layouts.app')
+@extends('adminlte::page')
+
+@section('title', 'Edit Role')
+
+@section('content_header')
+    <h1>Edit Role</h1>
+@stop
 
 @section('content')
-<div class="row">
-    <div class="col-lg-12 margin-tb">
-        <div class="pull-left">
-            <h2>Edit Role</h2>
-        </div>
-        <div class="pull-right">
-            <a class="btn btn-primary btn-sm mb-2" href="{{ route('admin.roles.index') }}"><i class="fa fa-arrow-left"></i> Back</a>
-        </div>
-    </div>
-</div>
-
-@if (count($errors) > 0)
-    <div class="alert alert-danger">
-        <strong>Whoops!</strong> There were some problems with your input.<br><br>
-        <ul>
-        @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
-        @endforeach
-        </ul>
-    </div>
-@endif
-
-<form method="POST" action="{{ route('admin.roles.update', $role->id) }}">
-    @csrf
-    @method('PUT')
-
-    <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="form-group">
-                <strong>Name:</strong>
-                <input type="text" name="name" placeholder="Name" class="form-control" value="{{ $role->name }}">
+    <div class="card">
+        <div class="card-header">
+            <div class="d-flex justify-content-between">
+                <h3 class="card-title">Role Information</h3>
+                <a href="{{ route('admin.roles.index') }}" class="btn btn-secondary btn-sm"><i class="fas fa-arrow-left"></i> Back</a>
             </div>
         </div>
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="form-group">
-                <strong>Permission:</strong>
-                <br/>
-                @foreach($permission as $value)
-                    <label><input type="checkbox" name="permission[{{$value->id}}]" value="{{$value->id}}" class="name" {{ in_array($value->id, $rolePermissions) ? 'checked' : ''}}>
-                    {{ $value->name }}</label>
-                <br/>
-                @endforeach
-            </div>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-            <button type="submit" class="btn btn-primary btn-sm mb-3"><i class="fa-solid fa-floppy-disk"></i> Submit</button>
+        <div class="card-body">
+            @if (count($errors) > 0)
+                <div class="alert alert-danger">
+                    <strong>Whoops!</strong> There were some problems with your input.<br><br>
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            <form method="POST" action="{{ route('admin.roles.update', $role->id) }}">
+                @csrf
+                @method('PUT')
+                
+                <div class="form-group">
+                    <label for="name"><strong>Name:</strong></label>
+                    <input type="text" id="name" name="name" class="form-control" placeholder="Role Name" value="{{ $role->name }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label><strong>Permissions:</strong></label>
+                    <div class="row">
+                        @foreach($permission as $value)
+                            <div class="col-md-4">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" name="permission[{{$value->id}}]" value="{{$value->id}}" class="custom-control-input" id="permission{{$value->id}}" {{ in_array($value->id, $rolePermissions) ? 'checked' : '' }}>
+                                    <label class="custom-control-label" for="permission{{$value->id}}">{{ $value->name }}</label>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+
+                <div class="form-group text-center">
+                    <button type="submit" class="btn btn-success btn-sm"><i class="fa fa-save"></i> Submit</button>
+                </div>
+            </form>
         </div>
     </div>
-</form>
 
-<p class="text-center text-primary"><small>Aswin</small></p>
-@endsection
+    <p class="text-center text-primary"><small>Aswin</small></p>
+@stop
